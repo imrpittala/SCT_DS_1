@@ -275,11 +275,85 @@ def export_statistical_summary(df: pd.DataFrame, output_json_path: str):
     logger.info(f"Statistical summary exported to: {output_json_path}")
 
 
+def export_demographic_distribution_figure(df: pd.DataFrame, output_image_path: str):
+    """
+    Exports clean, high-DPI (300 DPI) two-panel demographic distribution visualization:
+    (a) Age distribution histogram with smooth KDE curve and median marker.
+    (b) Categorical bar chart for gender and regions.
+    """
+    logger.info("Exporting dedicated demographic_distribution.png (two-panel)...")
+    set_visual_style()
+    
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(16, 6))
+    plt.subplots_adjust(wspace=0.28)
+    
+    fig.suptitle(
+        "Global Demographic Structure: Continuous Age & Categorical Regional Distributions",
+        fontsize=16,
+        fontweight="bold",
+        y=0.98
+    )
+
+    # Panel A: Age distribution histogram with smooth KDE and median marker
+    mean_age = df["Median_Age"].mean()
+    median_age = df["Median_Age"].median()
+    
+    sns.histplot(
+        data=df,
+        x="Median_Age",
+        kde=True,
+        color="#1f77b4",
+        bins=14,
+        ax=ax1,
+        edgecolor="white",
+        alpha=0.7,
+        line_kws={"linewidth": 2.5, "color": "#0d47a1"}
+    )
+    ax1.axvline(median_age, color="#2e7d32", linestyle="-.", linewidth=2.5, label=f"Median Marker: {median_age:.1f} yrs")
+    ax1.axvline(mean_age, color="#d32f2f", linestyle="--", linewidth=2.0, label=f"Mean: {mean_age:.1f} yrs")
+    ax1.set_title("(a) Population Age Distribution with Smooth KDE", weight="bold", pad=12)
+    ax1.set_xlabel("Median Age (Years)")
+    ax1.set_ylabel("Count of Countries")
+    ax1.legend(loc="upper right", frameon=True)
+
+    # Panel B: Categorical bar chart for Geographic Regions with Gender Ratio annotation
+    region_summary = df.groupby("Region").agg({
+        "Country_Name": "count",
+        "Gender_Ratio_Male_per_100_Female": "mean"
+    }).reset_index().rename(columns={"Country_Name": "Count", "Gender_Ratio_Male_per_100_Female": "Mean_Gender_Ratio"})
+    region_summary = region_summary.sort_values(by="Count", ascending=True)
+
+    palette = sns.color_palette("mako", len(region_summary))
+    bars = ax2.barh(region_summary["Region"], region_summary["Count"], color=palette, edgecolor="black", alpha=0.85)
+    
+    for bar, (_, row) in zip(bars, region_summary.iterrows()):
+        w = bar.get_width()
+        ratio = row["Mean_Gender_Ratio"]
+        ax2.text(
+            w + 0.4,
+            bar.get_y() + bar.get_height() / 2,
+            f"{int(w)} nations (Ratio: {ratio:.1f})",
+            va="center",
+            fontsize=9.5,
+            fontweight="semibold"
+        )
+    ax2.set_xlim(0, max(region_summary["Count"]) * 1.35)
+    ax2.set_title("(b) Categorical Regional Distribution & Mean Gender Ratio (M/100F)", weight="bold", pad=12)
+    ax2.set_xlabel("Number of Countries")
+    ax2.set_ylabel("Geographic Region")
+
+    os.makedirs(os.path.dirname(output_image_path), exist_ok=True)
+    plt.savefig(output_image_path, dpi=300, bbox_inches="tight")
+    plt.close()
+    logger.info(f"Demographic distribution figure exported to: {output_image_path}")
+
+
 def main():
     """Main execution function for demographic pipeline."""
     base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     data_path = os.path.join(base_dir, "data", "dataset.csv")
     report_img_path = os.path.join(base_dir, "reports", "visual_insights.png")
+    demographic_dist_path = os.path.join(base_dir, "reports", "demographic_distribution.png")
     report_json_path = os.path.join(base_dir, "reports", "demographic_summary.json")
     
     logger.info("Initializing SCT_DS_1 Demographic Analysis Pipeline...")
@@ -287,6 +361,7 @@ def main():
     
     # Generate figures and metrics
     generate_executive_report(df, report_img_path)
+    export_demographic_distribution_figure(df, demographic_dist_path)
     export_statistical_summary(df, report_json_path)
     logger.info("Pipeline execution completed successfully.")
 

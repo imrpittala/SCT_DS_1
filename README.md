@@ -73,12 +73,11 @@ The dataset contains standardized demographic, socio-economic, and population me
 ---
 
 ## 🖼️ Visual Insights Preview
-The end-to-end pipeline automatically compiles a 4-panel executive dashboard exported to `reports/visual_insights.png`:
-- **Top-Left**: Continuous distribution histogram with KDE, mean, median, and skewness annotations.
-- **Top-Right**: Bivariate scatter & trendline mapping Life Expectancy against Median Age weighted by population size.
-- **Bottom-Left**: Horizontal categorical bar chart comparing country distributions across geographic regions.
-- **Bottom-Right**: Ordered categorical bar chart comparing country counts across World Bank income tiers with percentage labels.
 
+### Two-Panel Continuous & Categorical Demographic Distribution
+![Demographic Distribution](reports/demographic_distribution.png)
+
+### Multi-Panel Executive Dashboard
 ![Executive Visual Insights](reports/visual_insights.png)
 
 ---
