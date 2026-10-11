@@ -1,0 +1,62 @@
+{
+    "dataset_metrics": {
+        "total_countries_analyzed": 78,
+        "global_population_sum": 7112880444,
+        "median_age_metrics": {
+            "mean": 31.333333333333332,
+            "median": 31.1,
+            "std": 8.91708802661827,
+            "iqr": 14.799999999999994,
+            "skewness": 0.0006041391316656927,
+            "kurtosis": -1.0183256366767197,
+            "min": 16.7,
+            "max": 48.6
+        },
+        "life_expectancy_metrics": {
+            "mean": 73.43333333333332,
+            "median": 73.95,
+            "std": 7.556551585311376,
+            "iqr": 11.75,
+            "skewness": -0.46621027997911363,
+            "kurtosis": -0.5242330549345637,
+            "min": 52.7,
+            "max": 84.6
+        },
+        "urbanization_metrics": {
+            "mean": 64.60128205128206,
+            "median": 69.45,
+            "std": 23.33826629507157,
+            "iqr": 39.7,
+            "skewness": -0.38165695433028773,
+            "kurtosis": -1.0563510983606017,
+            "min": 17.6,
+            "max": 100.0
+        }
+    },
+    "regional_breakdown": {
+        "count": {
+            "East Asia & Pacific": 13,
+            "Europe & Central Asia": 17,
+            "Latin America & Caribbean": 12,
+            "Middle East & North Africa": 10,
+            "North America": 3,
+            "South Asia": 8,
+            "Sub-Saharan Africa": 15
+        },
+        "sum": {
+            "East Asia & Pacific": 2296906813,
+            "Europe & Central Asia": 750298735,
+            "Latin America & Caribbean": 554665731,
+            "Middle East & North Africa": 397712026,
+            "North America": 372280991,
+            "South Asia": 1938696289,
+            "Sub-Saharan Africa": 802319859
+        }
+    },
+    "income_group_counts": {
+        "High income": 27,
+        "Lower middle income": 25,
+        "Upper middle income": 20,
+        "Low income": 6
+    }
+}
